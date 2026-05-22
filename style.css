@@ -1,0 +1,195 @@
+p {
+  text-align: right; 
+  font-size: 45px;
+  color: #fff;
+  text-shadow: 0 0 10px #00d4ff, 0 0 20px #00d4ff;
+}
+
+a {
+  text-decoration: none; 
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+body {
+    background: #050610;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Змінено на min-height для кращого скролу на малих екранах */
+    overflow-x: hidden;
+    background-image: radial-gradient(circle at 50% 50%, #111430 0%, #050610 100%);
+    padding: 20px; /* Відступи, щоб галерея не липла до країв екрану */
+}
+
+/* Рамка фотогалереї */
+.gallery-wrapper {
+    position: relative;
+    width: 100%; /* Займає всю доступну ширину на малих екранах */
+    max-width: 700px;
+    height: 560px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(0, 180, 216, 0.3);
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+    overflow: hidden;
+}
+
+/* Приховуємо стандартні перемикачі */
+input[type="radio"] {
+    display: none;
+}
+
+/* Контейнер-стрічка для 5 слайдів */
+.slides-container {
+    display: flex;
+    width: 500%;
+    height: 100%;
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Стиль одного слайда */
+.slide {
+    width: 20%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Контейнер для фото (верхня частина) */
+.image-box {
+    width: 100%;
+    height: 55%; /* Трохи зменшено, щоб дати більше простору тексту */
+    overflow: hidden;
+    background: #000;
+}
+
+.image-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+/* Ефект легкого наближення фото */
+.slide:hover .image-box img {
+    transform: scale(1.04);
+}
+
+/* Контейнер для факту (нижня частина) */
+.fact-box {
+    width: 100%;
+    height: 45%; /* Збільшено для кращої адаптивності */
+    padding: 25px 35px 50px 35px; /* Збільшено нижній паддінг, щоб текст не наповзав на точки */
+    background: rgba(10, 12, 28, 0.85);
+    border-top: 1px solid rgba(0, 180, 216, 0.2);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.fact-box h2 {
+    font-size: 1.6rem;
+    color: #00b4d8;
+    margin-bottom: 10px;
+    letter-spacing: 0.5px;
+}
+
+.fact-box p {
+    color: #cbd5e1;
+    font-size: 1.05rem;
+    line-height: 1.5;
+}
+
+.fact-box strong {
+    color: #ff007f;
+}
+
+/* Логіка перемикання кроками по 20% */
+#photo1:checked ~ .slides-container { transform: translateX(0%); }
+#photo2:checked ~ .slides-container { transform: translateX(-20%); }
+#photo3:checked ~ .slides-container { transform: translateX(-40%); }
+#photo4:checked ~ .slides-container { transform: translateX(-60%); }
+#photo5:checked ~ .slides-container { transform: translateX(-80%); }
+
+/* Кнопки перемикання (Точки) */
+.navigation-dots {
+    position: absolute;
+    bottom: 20px;
+    right: 35px;
+    display: flex;
+    gap: 10px;
+    z-index: 10; /* Переконуємось, що точки завжди зверху */
+}
+
+.navigation-dots label {
+    width: 12px;
+    height: 12px;
+    border: 2px solid #00b4d8;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* Підсвічування активної кнопки (Виправлено синтаксис наприкінці) */
+#photo1:checked ~ .navigation-dots label[for="photo1"],
+#photo2:checked ~ .navigation-dots label[for="photo2"],
+#photo3:checked ~ .navigation-dots label[for="photo3"],
+#photo4:checked ~ .navigation-dots label[for="photo4"],
+#photo5:checked ~ .navigation-dots label[for="photo5"] {
+    background: #ff007f;
+    border-color: #ff007f;
+    box-shadow: 0 0 10px #ff007f;
+    transform: scale(1.2);
+}
+
+/* --- АДАПТИВНІСТЬ ДЛЯ МОБІЛЬНИХ ПРИСТРОЇВ --- */
+
+@media (max-width: 600px) {
+    .gallery-wrapper {
+        height: auto; /* Дозволяємо висоті підлаштовуватися під контент */
+        aspect-ratio: 4 / 5; /* Встановлюємо гарні пропорції для мобільних екранів */
+    }
+
+    .image-box {
+        height: 50%; /* На мобільних ділимо навпіл: 50% фото, 50% текст */
+    }
+
+    .fact-box {
+        height: 50%;
+        padding: 15px 20px 45px 20px; /* Зменшуємо відступи */
+    }
+
+    .fact-box h2 {
+        font-size: 1.25rem; /* Зменшуємо заголовки */
+        margin-bottom: 5px;
+    }
+
+    .fact-box p {
+        font-size: 0.9rem; /* Зменшуємо текст, щоб він гарантовано вмістився */
+        line-height: 1.4;
+    }
+
+    .navigation-dots {
+        right: 50%;
+        transform: translateX(50%); /* Центруємо точки знизу на мобільних */
+        bottom: 15px;
+    }
+}
+
+@media (max-width: 400px) {
+    /* Додаткові правила для дуже маленьких екранів */
+    .gallery-wrapper {
+        aspect-ratio: 3 / 4; /* Робимо картку трохи вищою */
+    }
+    .fact-box p {
+        font-size: 0.85rem;
+    }
+}
+
+
